@@ -56,10 +56,6 @@ plot(tcs.sicalis)
 # Convex hull
 vol(tcs.sicalis, type = "convex")
 
-# Alpha-shape
-if (require("alphashape3d")) {
-  vol(tcs.sicalis, type = "alpha", avalue = 1)
-}
 }
 \references{
 Stoddard, M. C., & Prum, R. O. (2008). Evolution of avian plumage color

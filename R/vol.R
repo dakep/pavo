@@ -35,10 +35,6 @@
 #' # Convex hull
 #' vol(tcs.sicalis, type = "convex")
 #'
-#' # Alpha-shape
-#' if (require("alphashape3d")) {
-#'   vol(tcs.sicalis, type = "alpha", avalue = 1)
-#' }
 #' @importFrom geometry convhulln
 #' @importFrom graphics par polygon
 #' @importFrom grDevices trans3d adjustcolor
@@ -57,29 +53,11 @@ vol <- function(tcsdata, type = c("convex", "alpha"), avalue = "auto",
     stop("object is not in tetrahedral color space", call. = FALSE)
   }
 
-  if (type == "convex") {
-    coords <- tcsdata[, c("x", "y", "z")]
-    vol <- t(convhulln(coords, options = "FA")$hull)
-  } else {
-    if (!requireNamespace("alphashape3d", quietly = TRUE)) {
-      stop(
-        "Please install the alphashape3d package to be able to use ",
-        'type = "alpha"',
-        call. = FALSE
-      )
-    }
+  coords <- tcsdata[, c("x", "y", "z")]
+  vol <- t(convhulln(coords, options = "FA")$hull)
 
-    if (avalue == "auto") {
-      avalue <- find_astar(as.matrix(tcsdata[, c("x", "y", "z")]))
-    }
-
-    ashape <- alphashape3d::ashape3d(as.matrix(tcsdata[, c("x", "y", "z")]),
-      alpha = avalue
-    )
-
-    tri <- ashape$triang
-    vol <- t(tri[tri[, ncol(tri)] %in% c(2, 3), c(1, 2, 3)])
-    coords <- ashape$x
+  if (!identical(type, "convex")) {
+    warning("Only convex hull supported")
   }
 
   arg <- list(...)

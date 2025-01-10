@@ -73,10 +73,6 @@
 #' voloverlap(tcs.sicalis.T, tcs.sicalis.C, type = "convex", plot = TRUE)
 #' voloverlap(tcs.sicalis.T, tcs.sicalis.C, type = "convex", plot = TRUE, col = seq_len(3))
 #'
-#' # Alpha-shape volume
-#' if (require("alphashape3d")) {
-#'   voloverlap(tcs.sicalis.T, tcs.sicalis.B, type = "alpha", avalue = 1)
-#' }
 #' @author Rafael Maia \email{rm72@@zips.uakron.edu}
 #' @author Hugo Gruson \email{hugo.gruson+R@@normalesup.org}
 #'
@@ -147,44 +143,22 @@ voloverlap <- function(colsp1, colsp2, type = c("convex", "alpha"), avalue = "au
       Voverlap <- over$ch$p
 
       if (interactive) {
-        # check if rgl is installed and loaded
-        if (!requireNamespace("rgl", quietly = TRUE)) {
-          stop(dQuote("rgl"), " package needed for interactive plots. Please install it, or use interactive=FALSE.",
-            call. = FALSE
-          )
-        }
+        warning("Interactive plots are not supported.")
+      }
 
-        if (!isNamespaceLoaded("rgl")) {
-          requireNamespace("rgl")
-        }
+      plotrange <- apply(rbind(dat1, dat2), 2, range)
 
-        if (new) {
-          rgl::open3d(FOV = 1, mouseMode = c("zAxis", "xAxis", "zoom"))
-        }
+      vol(colsp1,
+        col = col[1], lwd = lwd, new = new, fill = fill,
+        xlim = plotrange[, "x"], ylim = plotrange[, "y"],
+        zlim = plotrange[, "z"], ...
+      )
+      vol(colsp2, col = col[2], lwd = lwd, fill = fill, new = FALSE)
 
-        tcsvol(colsp1, col = col[1], fill = fill)
-        tcsvol(colsp2, col = col[2], fill = fill)
-
-        if (!is.null(Voverlap)) {
-          colnames(Voverlap) <- c("x", "y", "z")
-          attr(Voverlap, "clrsp") <- "tcs"
-          tcsvol(Voverlap, col = col[3], fill = TRUE)
-        }
-      } else {
-        plotrange <- apply(rbind(dat1, dat2), 2, range)
-
-        vol(colsp1,
-          col = col[1], lwd = lwd, new = new, fill = fill,
-          xlim = plotrange[, "x"], ylim = plotrange[, "y"],
-          zlim = plotrange[, "z"], ...
-        )
-        vol(colsp2, col = col[2], lwd = lwd, fill = fill, new = FALSE)
-
-        if (!is.null(Voverlap)) {
-          colnames(Voverlap) <- c("x", "y", "z")
-          attr(Voverlap, "clrsp") <- "tcs"
-          vol(Voverlap, col = col[3], lwd = lwd, fill = TRUE, new = FALSE)
-        }
+      if (!is.null(Voverlap)) {
+        colnames(Voverlap) <- c("x", "y", "z")
+        attr(Voverlap, "clrsp") <- "tcs"
+        vol(Voverlap, col = col[3], lwd = lwd, fill = TRUE, new = FALSE)
       }
       ############
       # PLOT END #

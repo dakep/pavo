@@ -106,10 +106,6 @@ voloverlap(tcs.sicalis.T, tcs.sicalis.B, type = "convex")
 voloverlap(tcs.sicalis.T, tcs.sicalis.C, type = "convex", plot = TRUE)
 voloverlap(tcs.sicalis.T, tcs.sicalis.C, type = "convex", plot = TRUE, col = seq_len(3))
 
-# Alpha-shape volume
-if (require("alphashape3d")) {
-  voloverlap(tcs.sicalis.T, tcs.sicalis.B, type = "alpha", avalue = 1)
-}
 }
 \references{
 Stoddard, M. C., & Prum, R. O. (2008). Evolution of avian plumage color

@@ -47,15 +47,12 @@ Imports:
     lightr(>= 1.0),
     magick,
     farver,
-    plot3D,
     progressr,
     sf
 Suggests:
-    alphashape3d,
     imager,
     knitr,
     mapproj,
-    rgl,
     rmarkdown,
     testthat(>= 2.99.0),
     vdiffr,

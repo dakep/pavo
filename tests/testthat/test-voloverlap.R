@@ -94,21 +94,3 @@ test_that("Plane", {
   expect_error(suppressWarnings(voloverlap(plane_sicalis, plane_sicalis, type = "convex"), "error code 1"))
 })
 
-test_that("Alphashapes", {
-  skip_if_not_installed("alphashape3d")
-
-  overlap_alpha <- expect_silent(
-    voloverlap(tcs.sicalis.T, tcs.sicalis.B, type = "alpha", avalue = 0.5)
-  )
-
-  expect_equal(overlap_alpha[[1]], 5.183721e-06, tolerance = 1e-7)
-  expect_equal(overlap_alpha[[2]], 6.231493e-06, tolerance = 1e-7)
-
-  skip_on_cran()
-
-  set.seed(20200517)
-  expect_identical(
-    digest::sha1(voloverlap(tcs.sicalis.T, tcs.sicalis.B, type = "alpha", avalue = 0.5, nsamp = 10000), digits = 4),
-    "7932522b35c2c59365fe7c342f367f8ec35f601a"
-  )
-})
